@@ -1,0 +1,19 @@
+package com.icet.repository;
+
+import com.icet.model.entity.Inquiry;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
+    List<Inquiry> findByCustomerId(Long customerId);
+
+    List<Inquiry> findByPropertyId(Long propertyId);
+
+    List<Inquiry> findByPropertyIdAndIsRepliedFalse(Long propertyId);
+
+    List<Inquiry> findByCustomerIdAndIsRepliedFalse(Long customerId);
+}
+
