@@ -5,8 +5,12 @@ import com.icet.model.entity.CommercialProperty;
 import com.icet.model.entity.Land;
 import com.icet.model.entity.Property;
 import com.icet.model.entity.PropertyCategory;
+import com.icet.model.entity.PropertyImage;
 import com.icet.model.entity.ResidentialProperty;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class PropertyMapper {
@@ -14,7 +18,7 @@ public class PropertyMapper {
     public PropertyDTO toPropertyDTO(Property property, PropertyCategory category,
                                      ResidentialProperty residential,
                                      CommercialProperty commercial,
-                                     Land land) {
+                                     Land land, List<PropertyImage> images) {
         PropertyDTO dto = new PropertyDTO();
         dto.setPropertyId(property.getPropertyId());
         dto.setTitle(property.getTitle());
@@ -33,6 +37,14 @@ public class PropertyMapper {
         // Populate sellerId if seller is associated
         if (property.getSeller() != null) {
             dto.setSellerId(property.getSeller().getSellerId());
+        }
+
+        // Map images to imageUrls (base64 strings)
+        if (images != null && !images.isEmpty()) {
+            List<String> imageUrls = images.stream()
+                    .map(PropertyImage::getImagePath)
+                    .collect(Collectors.toList());
+            dto.setImageUrls(imageUrls);
         }
 
         // Add type-specific details

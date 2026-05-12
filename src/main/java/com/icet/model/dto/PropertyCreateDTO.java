@@ -35,8 +35,9 @@ public class PropertyCreateDTO {
     private Integer plotCount;
     private BigDecimal unitPrice;
     
-    // Images
+    // Images (base64 encoded)
     private List<String> imagePaths;
+    private List<String> imageDataList;  // Alternative field name for base64 image data
 
     // Seller association
     private Long sellerId;

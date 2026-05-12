@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,5 +31,6 @@ public class PropertyDTO {
     private Integer plotCount;
     private BigDecimal unitPrice;
     private Long sellerId;
+    private List<String> imageUrls;
 }
 

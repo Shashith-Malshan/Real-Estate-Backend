@@ -171,12 +171,16 @@ public class PropertyService {
             landRepository.save(land);
         }
 
-        // Add images if provided
-        if (dto.getImagePaths() != null && !dto.getImagePaths().isEmpty()) {
-            for (String imagePath : dto.getImagePaths()) {
+        // Add images if provided (support both imagePaths and imageDataList)
+        List<String> imagesToAdd = dto.getImageDataList() != null && !dto.getImageDataList().isEmpty() 
+            ? dto.getImageDataList() 
+            : dto.getImagePaths();
+            
+        if (imagesToAdd != null && !imagesToAdd.isEmpty()) {
+            for (String imageData : imagesToAdd) {
                 PropertyImage image = new PropertyImage();
                 image.setProperty(savedProperty);
-                image.setImagePath(imagePath);
+                image.setImagePath(imageData);
                 propertyImageRepository.save(image);
             }
         }
@@ -248,8 +252,9 @@ public class PropertyService {
         ResidentialProperty residential = residentialPropertyRepository.findByProperty_PropertyId(property.getPropertyId()).orElse(null);
         CommercialProperty commercial = commercialPropertyRepository.findByProperty_PropertyId(property.getPropertyId()).orElse(null);
         Land land = landRepository.findByProperty_PropertyId(property.getPropertyId()).orElse(null);
+        List<PropertyImage> images = propertyImageRepository.findByProperty_PropertyId(property.getPropertyId());
 
-        return propertyMapper.toPropertyDTO(property, category, residential, commercial, land);
+        return propertyMapper.toPropertyDTO(property, category, residential, commercial, land, images);
     }
 }
 

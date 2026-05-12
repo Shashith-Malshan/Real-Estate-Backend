@@ -31,6 +31,6 @@ public class PropertyImage {
     @JoinColumn(name = "property_id", nullable = false)
     private Property property;
 
-    @Column(name = "image_path", nullable = false)
+    @Column(name = "image_path", nullable = false, columnDefinition = "LONGTEXT")
     private String imagePath;
 }
