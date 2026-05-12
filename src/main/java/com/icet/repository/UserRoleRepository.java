@@ -9,10 +9,11 @@ import java.util.Optional;
 
 @Repository
 public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
-    List<UserRole> findByUserId(Long userId);
+    List<UserRole> findByUserUserId(Long userId);
 
-    Optional<UserRole> findByUserIdAndIsLastLoginTrue(Long userId);
+    Optional<UserRole> findByUserUserIdAndIsLastLoginTrue(Long userId);
 
-    List<UserRole> findByRoleId(Long roleId);
+    Optional<UserRole> findByUserUserIdAndRoleRoleId(Long userId, Long roleId);
+
+    List<UserRole> findByRoleRoleId(Long roleId);
 }
-

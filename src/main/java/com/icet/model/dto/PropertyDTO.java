@@ -24,5 +24,11 @@ public class PropertyDTO {
     private BigDecimal price;
     private String type;
     private String status;
+    private Integer bedroomCount;
+    private Integer bathroomCount;
+    private BigDecimal floorSize;
+    private Integer plotCount;
+    private BigDecimal unitPrice;
+    private Long sellerId;
 }
 

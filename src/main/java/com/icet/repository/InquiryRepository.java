@@ -8,12 +8,11 @@ import java.util.List;
 
 @Repository
 public interface InquiryRepository extends JpaRepository<Inquiry, Long> {
-    List<Inquiry> findByCustomerId(Long customerId);
+    List<Inquiry> findByCustomer_CustomerId(Long customerId);
 
-    List<Inquiry> findByPropertyId(Long propertyId);
+    List<Inquiry> findByProperty_PropertyId(Long propertyId);
 
-    List<Inquiry> findByPropertyIdAndIsRepliedFalse(Long propertyId);
+    List<Inquiry> findByProperty_PropertyIdAndIsRepliedFalse(Long propertyId);
 
-    List<Inquiry> findByCustomerIdAndIsRepliedFalse(Long customerId);
+    List<Inquiry> findByCustomer_CustomerIdAndIsRepliedFalse(Long customerId);
 }
-

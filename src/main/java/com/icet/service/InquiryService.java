@@ -78,7 +78,7 @@ public class InquiryService {
      * Get all inquiries for a customer
      */
     public List<InquiryDTO> getInquiriesByCustomer(Long customerId) {
-        return inquiryRepository.findByCustomerId(customerId).stream()
+        return inquiryRepository.findByCustomer_CustomerId(customerId).stream()
                 .map(inquiryMapper::toInquiryDTO)
                 .collect(Collectors.toList());
     }
@@ -87,7 +87,7 @@ public class InquiryService {
      * Get all inquiries for a property
      */
     public List<InquiryDTO> getInquiriesByProperty(Long propertyId) {
-        return inquiryRepository.findByPropertyId(propertyId).stream()
+        return inquiryRepository.findByProperty_PropertyId(propertyId).stream()
                 .map(inquiryMapper::toInquiryDTO)
                 .collect(Collectors.toList());
     }
@@ -96,7 +96,7 @@ public class InquiryService {
      * Get unanswered inquiries for a property (for seller)
      */
     public List<InquiryDTO> getUnansweredInquiries(Long propertyId) {
-        return inquiryRepository.findByPropertyIdAndIsRepliedFalse(propertyId).stream()
+        return inquiryRepository.findByProperty_PropertyIdAndIsRepliedFalse(propertyId).stream()
                 .map(inquiryMapper::toInquiryDTO)
                 .collect(Collectors.toList());
     }
@@ -123,4 +123,3 @@ public class InquiryService {
         inquiryRepository.delete(inquiry);
     }
 }
-

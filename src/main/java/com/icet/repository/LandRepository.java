@@ -8,6 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface LandRepository extends JpaRepository<Land, Long> {
-    Optional<Land> findByPropertyId(Long propertyId);
+    Optional<Land> findByProperty_PropertyId(Long propertyId);
 }
-

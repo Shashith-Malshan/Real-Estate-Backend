@@ -9,18 +9,19 @@ import com.icet.model.entity.Property;
 import com.icet.model.entity.PropertyCategory;
 import com.icet.model.entity.PropertyImage;
 import com.icet.model.entity.ResidentialProperty;
+import com.icet.model.entity.Seller;
 import com.icet.repository.CommercialPropertyRepository;
 import com.icet.repository.LandRepository;
 import com.icet.repository.PropertyCategoryRepository;
 import com.icet.repository.PropertyImageRepository;
 import com.icet.repository.PropertyRepository;
 import com.icet.repository.ResidentialPropertyRepository;
+import com.icet.repository.SellerRepository;
 import com.icet.service.mapper.PropertyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,9 @@ public class PropertyService {
 
     @Autowired
     private PropertyImageRepository propertyImageRepository;
+
+    @Autowired
+    private SellerRepository sellerRepository;
 
     @Autowired
     private PropertyMapper propertyMapper;
@@ -89,7 +93,7 @@ public class PropertyService {
      * Search properties by category
      */
     public List<PropertyDTO> searchByCategory(Long categoryId) {
-        return propertyRepository.findByPropertyCategoryId(categoryId).stream()
+        return propertyRepository.findByPropertyCategory_PropertyCategoryId(categoryId).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
@@ -98,7 +102,19 @@ public class PropertyService {
      * Search with multiple filters
      */
     public List<PropertyDTO> searchProperties(String district, Long categoryId) {
-        return propertyRepository.findByDistrictAndPropertyCategoryId(district, categoryId).stream()
+        return propertyRepository.findByDistrictAndPropertyCategory_PropertyCategoryId(district, categoryId).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get properties by seller ID
+     */
+    public List<PropertyDTO> getPropertiesBySeller(Long sellerId) {
+        // Verify seller exists
+        sellerRepository.findById(sellerId)
+                .orElseThrow(() -> new EntityNotFoundException("Seller not found with ID: " + sellerId));
+        return propertyRepository.findBySeller_SellerId(sellerId).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
@@ -120,6 +136,11 @@ public class PropertyService {
         property.setPropertyCategory(category);
         property.setVisitCount(0);
         property.setInquiryCount(0);
+
+        // Associate seller if sellerId provided
+        if (dto.getSellerId() != null) {
+            sellerRepository.findById(dto.getSellerId()).ifPresent(property::setSeller);
+        }
 
         Property savedProperty = propertyRepository.save(property);
 
@@ -187,13 +208,13 @@ public class PropertyService {
                 .orElseThrow(() -> new EntityNotFoundException("Property not found"));
 
         // Delete related images
-        List<PropertyImage> images = propertyImageRepository.findByPropertyId(propertyId);
+        List<PropertyImage> images = propertyImageRepository.findByProperty_PropertyId(propertyId);
         propertyImageRepository.deleteAll(images);
 
         // Delete category-specific records
-        residentialPropertyRepository.findByPropertyId(propertyId).ifPresent(residentialPropertyRepository::delete);
-        commercialPropertyRepository.findByPropertyId(propertyId).ifPresent(commercialPropertyRepository::delete);
-        landRepository.findByPropertyId(propertyId).ifPresent(landRepository::delete);
+        residentialPropertyRepository.findByProperty_PropertyId(propertyId).ifPresent(residentialPropertyRepository::delete);
+        commercialPropertyRepository.findByProperty_PropertyId(propertyId).ifPresent(commercialPropertyRepository::delete);
+        landRepository.findByProperty_PropertyId(propertyId).ifPresent(landRepository::delete);
 
         // Delete base property
         propertyRepository.delete(property);
@@ -224,9 +245,9 @@ public class PropertyService {
      */
     private PropertyDTO convertToDTO(Property property) {
         PropertyCategory category = property.getPropertyCategory();
-        ResidentialProperty residential = residentialPropertyRepository.findByPropertyId(property.getPropertyId()).orElse(null);
-        CommercialProperty commercial = commercialPropertyRepository.findByPropertyId(property.getPropertyId()).orElse(null);
-        Land land = landRepository.findByPropertyId(property.getPropertyId()).orElse(null);
+        ResidentialProperty residential = residentialPropertyRepository.findByProperty_PropertyId(property.getPropertyId()).orElse(null);
+        CommercialProperty commercial = commercialPropertyRepository.findByProperty_PropertyId(property.getPropertyId()).orElse(null);
+        Land land = landRepository.findByProperty_PropertyId(property.getPropertyId()).orElse(null);
 
         return propertyMapper.toPropertyDTO(property, category, residential, commercial, land);
     }

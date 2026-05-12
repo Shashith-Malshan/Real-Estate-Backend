@@ -18,5 +18,7 @@ public class UserResponseDTO {
     private String nic;
     private Long activeRoleId;
     private String roleName;
+    private String token;
+    private Long sellerId;
 }
 

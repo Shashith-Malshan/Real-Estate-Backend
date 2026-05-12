@@ -8,12 +8,11 @@ import java.util.List;
 
 @Repository
 public interface VisitRepository extends JpaRepository<Visit, Long> {
-    List<Visit> findByCustomerId(Long customerId);
+    List<Visit> findByCustomer_CustomerId(Long customerId);
 
-    List<Visit> findByPropertyId(Long propertyId);
+    List<Visit> findByProperty_PropertyId(Long propertyId);
 
-    List<Visit> findByPropertyIdAndIsVisitedFalse(Long propertyId);
+    List<Visit> findByProperty_PropertyIdAndIsVisitedFalse(Long propertyId);
 
-    List<Visit> findByCustomerIdAndIsVisitedFalse(Long customerId);
+    List<Visit> findByCustomer_CustomerIdAndIsVisitedFalse(Long customerId);
 }
-

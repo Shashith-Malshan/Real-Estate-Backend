@@ -8,10 +8,9 @@ import java.util.List;
 
 @Repository
 public interface PropertyDealRepository extends JpaRepository<PropertyDeal, Long> {
-    List<PropertyDeal> findByCustomerId(Long customerId);
+    List<PropertyDeal> findByCustomer_CustomerId(Long customerId);
 
-    List<PropertyDeal> findByPropertyId(Long propertyId);
+    List<PropertyDeal> findByProperty_PropertyId(Long propertyId);
 
-    boolean existsByPropertyIdAndCustomerId(Long propertyId, Long customerId);
+    boolean existsByProperty_PropertyIdAndCustomer_CustomerId(Long propertyId, Long customerId);
 }
-

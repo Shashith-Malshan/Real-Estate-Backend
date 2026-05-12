@@ -47,7 +47,7 @@ public class DealService {
                 .orElseThrow(() -> new EntityNotFoundException("Property not found"));
 
         // Check if deal already exists for this property-customer pair
-        if (dealRepository.existsByPropertyIdAndCustomerId(dto.getPropertyId(), dto.getCustomerId())) {
+        if (dealRepository.existsByProperty_PropertyIdAndCustomer_CustomerId(dto.getPropertyId(), dto.getCustomerId())) {
             throw new IllegalArgumentException("Deal already exists for this property and customer");
         }
 
@@ -76,7 +76,7 @@ public class DealService {
      * Get all deals for a customer
      */
     public List<PropertyDealDTO> getDealsByCustomer(Long customerId) {
-        return dealRepository.findByCustomerId(customerId).stream()
+        return dealRepository.findByCustomer_CustomerId(customerId).stream()
                 .map(dealMapper::toDealDTO)
                 .collect(Collectors.toList());
     }
@@ -85,7 +85,7 @@ public class DealService {
      * Get all deals for a property
      */
     public List<PropertyDealDTO> getDealsByProperty(Long propertyId) {
-        return dealRepository.findByPropertyId(propertyId).stream()
+        return dealRepository.findByProperty_PropertyId(propertyId).stream()
                 .map(dealMapper::toDealDTO)
                 .collect(Collectors.toList());
     }
@@ -99,4 +99,3 @@ public class DealService {
         dealRepository.delete(deal);
     }
 }
-

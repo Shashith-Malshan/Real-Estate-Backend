@@ -37,5 +37,8 @@ public class PropertyCreateDTO {
     
     // Images
     private List<String> imagePaths;
+
+    // Seller association
+    private Long sellerId;
 }
 

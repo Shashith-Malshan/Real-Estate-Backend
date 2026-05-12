@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.icet.model.entity.Seller;
 
 @Getter
 @Setter
@@ -48,4 +49,8 @@ public class Property {
 
     @Column(name = "district", nullable = false)
     private String district;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id", nullable = true)
+    private Seller seller;
 }

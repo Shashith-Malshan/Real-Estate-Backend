@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class PropertyMapper {
 
-    public PropertyDTO toPropertyDTO(Property property, PropertyCategory category, 
-                                     ResidentialProperty residential, 
-                                     CommercialProperty commercial, 
+    public PropertyDTO toPropertyDTO(Property property, PropertyCategory category,
+                                     ResidentialProperty residential,
+                                     CommercialProperty commercial,
                                      Land land) {
         PropertyDTO dto = new PropertyDTO();
         dto.setPropertyId(property.getPropertyId());
@@ -22,28 +22,37 @@ public class PropertyMapper {
         dto.setLocation(property.getLocation());
         dto.setDistrict(property.getDistrict());
         dto.setPropertyCategoryId(property.getPropertyCategory().getPropertyCategoryId());
-        
+
         if (category != null) {
             dto.setCategoryName(category.getName());
         }
-        
+
         dto.setVisitCount(property.getVisitCount());
         dto.setInquiryCount(property.getInquiryCount());
-        
+
+        // Populate sellerId if seller is associated
+        if (property.getSeller() != null) {
+            dto.setSellerId(property.getSeller().getSellerId());
+        }
+
         // Add type-specific details
         if (residential != null) {
             dto.setPrice(residential.getPrice());
             dto.setType(residential.getType());
             dto.setStatus(residential.getStatus());
+            dto.setBedroomCount(residential.getBedroomCount());
+            dto.setBathroomCount(residential.getBathroomCount());
         } else if (commercial != null) {
             dto.setPrice(commercial.getPrice());
             dto.setType(commercial.getType());
             dto.setStatus(commercial.getStatus());
+            dto.setFloorSize(commercial.getFloorSize());
         } else if (land != null) {
-            dto.setPrice(land.getUnitPrice());
+            dto.setUnitPrice(land.getUnitPrice());
+            dto.setPlotCount(land.getPlotCount());
             dto.setType("Land");
         }
-        
+
         return dto;
     }
 
@@ -59,4 +68,3 @@ public class PropertyMapper {
         return property;
     }
 }
-

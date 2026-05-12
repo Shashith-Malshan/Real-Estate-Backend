@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface PropertyRepository extends JpaRepository<Property, Long> {
-    List<Property> findByPropertyCategoryId(Long propertyCategoryId);
+    List<Property> findByPropertyCategory_PropertyCategoryId(Long propertyCategoryId);
 
     List<Property> findByDistrictContaining(String district);
 
@@ -16,6 +16,7 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
 
     List<Property> findByTitleContaining(String title);
 
-    List<Property> findByDistrictAndPropertyCategoryId(String district, Long propertyCategoryId);
-}
+    List<Property> findByDistrictAndPropertyCategory_PropertyCategoryId(String district, Long propertyCategoryId);
 
+    List<Property> findBySeller_SellerId(Long sellerId);
+}

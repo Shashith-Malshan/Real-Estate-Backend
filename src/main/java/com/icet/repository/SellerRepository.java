@@ -9,8 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface SellerRepository extends JpaRepository<Seller, Long> {
-    Optional<Seller> findByUserRoleId(Long userRoleId);
+    Optional<Seller> findByUserRoleUserRoleId(Long userRoleId);
 
-    List<Seller> findBySellerTypeId(Long sellerTypeId);
+    List<Seller> findBySellerTypeSellerTypeId(Long sellerTypeId);
 }
-

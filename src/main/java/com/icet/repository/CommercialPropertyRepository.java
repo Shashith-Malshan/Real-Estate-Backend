@@ -8,6 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface CommercialPropertyRepository extends JpaRepository<CommercialProperty, Long> {
-    Optional<CommercialProperty> findByPropertyId(Long propertyId);
+    Optional<CommercialProperty> findByProperty_PropertyId(Long propertyId);
 }
-

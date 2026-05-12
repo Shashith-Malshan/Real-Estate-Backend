@@ -76,7 +76,7 @@ public class VisitService {
      * Get all visits for a customer
      */
     public List<VisitDTO> getVisitsByCustomer(Long customerId) {
-        return visitRepository.findByCustomerId(customerId).stream()
+        return visitRepository.findByCustomer_CustomerId(customerId).stream()
                 .map(visitMapper::toVisitDTO)
                 .collect(Collectors.toList());
     }
@@ -85,7 +85,7 @@ public class VisitService {
      * Get all visits for a property
      */
     public List<VisitDTO> getVisitsByProperty(Long propertyId) {
-        return visitRepository.findByPropertyId(propertyId).stream()
+        return visitRepository.findByProperty_PropertyId(propertyId).stream()
                 .map(visitMapper::toVisitDTO)
                 .collect(Collectors.toList());
     }
@@ -94,7 +94,7 @@ public class VisitService {
      * Get pending visits for a property (not yet visited)
      */
     public List<VisitDTO> getPendingVisits(Long propertyId) {
-        return visitRepository.findByPropertyIdAndIsVisitedFalse(propertyId).stream()
+        return visitRepository.findByProperty_PropertyIdAndIsVisitedFalse(propertyId).stream()
                 .map(visitMapper::toVisitDTO)
                 .collect(Collectors.toList());
     }
@@ -121,4 +121,3 @@ public class VisitService {
         visitRepository.delete(visit);
     }
 }
-

@@ -1,5 +1,6 @@
 package com.icet.controller;
 
+import com.icet.model.dto.RoleSwitchRequestDTO;
 import com.icet.model.dto.UserLoginDTO;
 import com.icet.model.dto.UserRegistrationDTO;
 import com.icet.model.dto.UserResponseDTO;
@@ -7,13 +8,13 @@ import com.icet.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin
 public class AuthController {
 
     @Autowired
@@ -37,6 +38,24 @@ public class AuthController {
     public ResponseEntity<UserResponseDTO> login(@RequestBody UserLoginDTO dto) {
         UserResponseDTO response = authService.login(dto);
         return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Get role IDs assigned to a user
+     * GET /api/auth/users/{userId}/roles
+     */
+    @GetMapping("/users/{userId}/roles")
+    public ResponseEntity<List<Long>> getUserRoles(@PathVariable Long userId) {
+        return ResponseEntity.ok(authService.getAvailableRoleIds(userId));
+    }
+
+    /**
+     * Switch the active role for a user
+     * POST /api/auth/switch-role
+     */
+    @PostMapping("/switch-role")
+    public ResponseEntity<UserResponseDTO> switchRole(@RequestBody RoleSwitchRequestDTO dto) {
+        return ResponseEntity.ok(authService.switchActiveRole(dto));
     }
 }
 
