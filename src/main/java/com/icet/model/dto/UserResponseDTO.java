@@ -20,5 +20,6 @@ public class UserResponseDTO {
     private String roleName;
     private String token;
     private Long sellerId;
+    private Long customerId;
 }
 

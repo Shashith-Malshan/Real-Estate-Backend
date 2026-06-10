@@ -2,9 +2,9 @@ package com.icet.service.mapper;
 
 import com.icet.model.dto.UserRegistrationDTO;
 import com.icet.model.dto.UserResponseDTO;
-import com.icet.model.entity.Seller;
 import com.icet.model.entity.User;
 import com.icet.model.entity.UserRole;
+import com.icet.repository.CustomerRepository;
 import com.icet.repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,6 +16,9 @@ public class UserMapper {
 
     @Autowired
     private SellerRepository sellerRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     public User toUserEntity(UserRegistrationDTO dto) {
         User user = new User();
@@ -45,6 +48,12 @@ public class UserMapper {
             if ("SELLER".equals(userRole.getRole().getName())) {
                 sellerRepository.findByUserRoleUserRoleId(userRole.getUserRoleId())
                         .ifPresent(seller -> dto.setSellerId(seller.getSellerId()));
+            }
+
+            // Populate customerId if the active role is BUYER
+            if ("BUYER".equals(userRole.getRole().getName())) {
+                customerRepository.findByUserRoleUserRoleId(userRole.getUserRoleId())
+                        .ifPresent(customer -> dto.setCustomerId(customer.getCustomerId()));
             }
         }
 

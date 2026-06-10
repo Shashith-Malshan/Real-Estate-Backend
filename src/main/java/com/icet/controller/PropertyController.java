@@ -39,6 +39,18 @@ public class PropertyController {
     }
 
     /**
+     * Get latest N properties ordered by propertyId descending
+     * GET /api/properties/latest?limit=6&categoryId=1 (categoryId is optional)
+     */
+    @GetMapping("/latest")
+    public ResponseEntity<List<PropertyDTO>> getLatestProperties(
+            @RequestParam(required = false, defaultValue = "6") Integer limit,
+            @RequestParam(required = false) Long categoryId) {
+        List<PropertyDTO> properties = propertyService.getLatestProperties(limit, categoryId);
+        return ResponseEntity.ok(properties);
+    }
+
+    /**
      * Get property by ID
      * GET /api/properties/{propertyId}
      */
